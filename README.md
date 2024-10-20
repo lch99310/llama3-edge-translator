@@ -37,7 +37,7 @@ Welcome to CH made Chinese (Mandarin) Translator! This powerful Edge extension s
 
 ## 🎥 Demo
 
-![CH made Chinese Translator Demo](CH_made_Chinese_Translator_Demo.mov)
+![CH made Chinese Translator Demo](demo.gif)
 
 Watch our demo video to see the CH made Chinese (Mandarin) Translator in action!
 
@@ -64,7 +64,7 @@ The translation engine uses the Llama 3.2 language model, accessed through the G
 
 ## 📄 License
 
-[Include your chosen license here]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgements
 
