@@ -2,8 +2,12 @@ const GROQ_API_KEY = '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';
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "translate") {
+    console.log("Received translation request in background");
     translateText(request.text)
-      .then(translatedText => sendResponse({ translatedText }))
+      .then(translatedText => {
+        console.log("Translation completed in background");
+        sendResponse({ translatedText });
+      })
       .catch(error => {
         console.error('Translation error:', error);
         sendResponse({ error: error.message });
@@ -13,6 +17,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 async function translateText(text) {
+  console.log("Starting translation in background");
   const apiUrl = "https://api.groq.com/openai/v1/chat/completions";
 
   try {
@@ -34,7 +39,8 @@ async function translateText(text) {
 4. Preserve the original meaning and tone of the content while making it culturally appropriate for a Chinese-speaking audience.
 5. Use Traditional Chinese characters throughout the translation.
 6. Preserve any HTML tags present in the original text. Do not translate the content of HTML tags.
-7. Only respond with the translated text, nothing else.`
+7. Only respond with the translated text, nothing else.
+8. Do not include any separator strings like '||||' in your translation.`
           },
           {
             role: "user",
@@ -42,12 +48,13 @@ async function translateText(text) {
           }
         ],
         temperature: 0.3,
-        max_tokens: 4000
+        max_tokens: 7000 // Reduced from 16000 to a more reasonable number
       })
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorBody = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
     }
 
     const data = await response.json();
